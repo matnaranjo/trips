@@ -7,6 +7,7 @@ use Illuminate\Foundation\Auth\User;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
 use App\Models\trip;
+use Illuminate\Auth\Events\Registered;
 use App\Http\Livewire;
 
 
@@ -43,6 +44,9 @@ class lwcontroller extends Controller
         $user ->save();
 
         $userSave = $user -> save();
+
+        event(new Registered($user));
+        
         Auth::login($user);
 
         return redirect(route('privateSec'));
