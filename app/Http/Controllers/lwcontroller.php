@@ -45,10 +45,10 @@ class lwcontroller extends Controller
         $user->password = Hash::make($request->password);
         
         $user ->save();
-        
-        event(new Registered($user));
 
         Auth::login($user);
+
+        event(new Registered($user));
 
         return redirect(route('privateSec'));
 

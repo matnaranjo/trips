@@ -14,7 +14,7 @@
     <div class="container-sm">
 
     
-    <form action="{{route('verificationResend')}}" method="POST">
+    <form class="text-center mt-5" action="{{route('verificationResend')}}" method="POST">
         @csrf
 
         @if (Session::get('message'))
@@ -23,7 +23,10 @@
         </div>
         @endif
 
-        <h3 >plis verificar email</h3>
+        <h3 >Verify email address</h3>
+        <p>You must first verify your e-mail address to access your account.</p>
+
+        <p>If you did NOT receive a verification e-mail, click "Resend confirmation E-mail" button</p>
         <button type="submit"  class="btn btn-primary">Resend Confirmation E-mail</button>
     </form>
     
