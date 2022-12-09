@@ -9,7 +9,9 @@ use Illuminate\Support\Facades\Auth;
 use App\Models\trip;
 use Illuminate\Auth\Events\Registered;
 use App\Http\Livewire;
+use Illuminate\Routing\Route;
 
+use Illuminate\Foundation\Auth\EmailVerificationRequest;
 
 class lwcontroller extends Controller
 {
@@ -21,6 +23,7 @@ class lwcontroller extends Controller
     public function test(){return view('pages.test');}
     public function addEntry(){return view('pages.add');}
     public function searchEntry(){return view('pages.search');}
+    public function emailVerify(){return view('email.emailver');}
 
 
     // register, log in and log out functions
@@ -42,11 +45,9 @@ class lwcontroller extends Controller
         $user->password = Hash::make($request->password);
         
         $user ->save();
-
-        $userSave = $user -> save();
-
-        event(new Registered($user));
         
+        event(new Registered($user));
+
         Auth::login($user);
 
         return redirect(route('privateSec'));
@@ -73,6 +74,7 @@ class lwcontroller extends Controller
             return redirect(route('login'));
         }
     }
+    
 
     public function logoutUser(Request $request){
 
@@ -82,6 +84,19 @@ class lwcontroller extends Controller
 
         return redirect(route('login'));
 
+    }
+
+    // Resend email verification
+    public function resendVer(Request $request){
+        $request->user()->sendEmailVerificationNotification();
+        return back()->with('message', 'Verification link sent!');
+    }
+
+    // Email verification handler
+    public function EVerification(EmailVerificationRequest $request){
+        $request->fulfill();
+ 
+        return redirect(route('privateSec'));
     }
 
     // add information to database.
